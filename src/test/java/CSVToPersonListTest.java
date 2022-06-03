@@ -53,6 +53,37 @@ class CSVToPersonListTest {
         Assertions.assertThrows(RuntimeException.class,()->{csvToPersonList.addPerson("Andrew","Andree",null);
         });
     }
+    @Test
+    @DisplayName("Should not create person when phone has 10 digits")
+    public void shouldThrowRuntimeExceptionWhenPhoneHasTenDigits() {
+        Assertions.assertThrows(RuntimeException.class,()->{csvToPersonList.addPerson("Andrew","Andree",1234567891L);
+        });
+    }
+    @Test
+    @DisplayName("Should not create person when phone has 12 digits")
+    public void shouldThrowRuntimeExceptionWhenPhoneHasTwelveDigits() {
+        Assertions.assertThrows(RuntimeException.class,()->{csvToPersonList.addPerson("Andrew","Andree",123456789111L);
+        });
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "src/cards.csv", numLinesToSkip = 1)
+    public void shouldNotThrowExceptionWhenNameFromCSVisNotNull(String name, String surname, Long phone){
+        assertNotNull(name);
+        assertNotEquals("", name);
+    }
+    @ParameterizedTest
+    @CsvFileSource(resources = "src/cards.csv", numLinesToSkip = 1)
+    public void shouldNotThrowExceptionWhenSurnameFromCSVisNotNull(String name, String surname, Long phone){
+        assertNotNull(surname);
+        assertNotEquals("", surname);
+    }
+    @ParameterizedTest
+    @CsvFileSource(resources = "src/cards.csv", numLinesToSkip = 1)
+    public void shouldNotThrowExceptionWhenPhoneFromCSVisNotNull(String name, String surname, Long phone){
+        assertNotNull(phone);
+        assertNotEquals(null, phone);
+    }
 
     @AfterEach
     public void tearDown(){
